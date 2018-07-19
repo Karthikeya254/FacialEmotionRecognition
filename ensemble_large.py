@@ -29,10 +29,10 @@ def top2_acc(y_true, y_pred):
     return metrics.top_k_categorical_accuracy(y_true, y_pred, k=2)
 
 alexnet = load_model('Final_models/Alexnet.h5', custom_objects={'top2_acc': top2_acc})
-resnet = load_model('Final_models/Affectnet_resnet-FullData-run1.h5', custom_objects={'top2_acc': top2_acc})
-vggnet = load_model('Final_models/VGGnet-FullData-batch-Run_qsub.h5', custom_objects={'top2_acc': top2_acc})
-vggnet_dark = load_model('Final_models/VGGnet-FullData-batch-Run_dark_1.h5', custom_objects={'top2_acc': top2_acc})
-alexnet_dark = load_model('Final_models/Darknet-AlexnetGray-Run1.h5', custom_objects={'top2_acc': top2_acc})
+resnet = load_model('Final_models/Resnet.h5', custom_objects={'top2_acc': top2_acc})
+vggnet = load_model('Final_models/VGGnet.h5', custom_objects={'top2_acc': top2_acc})
+vggnet_dark = load_model('Final_models/VGGnet_Short.h5', custom_objects={'top2_acc': top2_acc})
+alexnet_dark = load_model('Final_models/Alexnet_Short.h5', custom_objects={'top2_acc': top2_acc})
 
 alex_pred_probs = alexnet.predict(X_test)
 res_pred_probs = resnet.predict(X_test)

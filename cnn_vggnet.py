@@ -8,7 +8,7 @@ from keras.layers import Conv2D, MaxPooling2D, AveragePooling2D
 from keras.backend.tensorflow_backend import set_session
 from keras import backend as K
 from keras.utils.np_utils import to_categorical
-import utils
+from utils import getData, top2_acc, prepareCallbacks, printMetrics
 
 sess=tf.Session()
 set_session(sess)
@@ -16,10 +16,9 @@ set_session(sess)
 path = "Affectnet_data/"
 X_train, X_test, Y_train, Y_test = getData(path+"Affectnet-96X-Full.npy", path+"Affectnet-Y-Full.npy", 0.2)
 
-# define path to save model
-model_path = 'VGGnet-FullData-batch-Run_interactive_111.h5'
-logger_file = 'VGGnet-FullData-batch-Run-trainingInfo_interactive_111.csv'
-lr_reducer, early_stopper, csv_logger, model_checkpt = prepareCallbacks(model_path, logger_file)
+model_file = 'Final_models/VGGnet.h5'
+logger_file = 'Logs/VGGnet_log.csv'
+lr_reducer, early_stopper, csv_logger, model_checkpt = prepareCallbacks(model_file, logger_file)
 
 droprate=0.2
 nb_classes = 7

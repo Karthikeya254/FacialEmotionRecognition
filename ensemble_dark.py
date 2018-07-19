@@ -18,17 +18,17 @@ set_session(sess)
 path = "Affectnet_data/"
 X_train, X_test, Y_train, Y_test = getData(path+"Affectnet-96X-Full.npy", path+"Affectnet-Y-Full.npy", 0.2)
 
-alexnet = load_model('Final_models/Alexnet.h5', custom_objects={'top2_acc': top2_acc})
-resnet = load_model('Final_models/Resnet.h5', custom_objects={'top2_acc': top2_acc})
-vggnet = load_model('Final_models/VGGnet.h5', custom_objects={'top2_acc': top2_acc})
+alexnet_dark = load_model('Final_models/VGG_Alex_dark.h5', custom_objects={'top2_acc': top2_acc})
+resnet_dark = load_model('Final_models/VGG_Res_dark.h5', custom_objects={'top2_acc': top2_acc})
+vggnet_dark = load_model('Final_models/VGG_VGG_dark.h5', custom_objects={'top2_acc': top2_acc})
 
-alex_pred_probs = alexnet.predict(X_test)
-res_pred_probs = resnet.predict(X_test)
-vgg_pred_probs = vggnet.predict(X_test)
+alex_pred_probs = alexnet_dark.predict(X_test)
+res_pred_probs = resnet_dark.predict(X_test)
+vgg_pred_probs = vggnet_dark.predict(X_test)
 
-alexnet.evaluate(X_test, Y_test, verbose=0)
-vggnet.evaluate(X_test, Y_test, verbose=0)
-resnet.evaluate(X_test, Y_test, verbose=0)
+alexnet_dark.evaluate(X_test, Y_test, verbose=0)
+resnet_dark.evaluate(X_test, Y_test, verbose=0)
+vggnet_dark.evaluate(X_test, Y_test, verbose=0)
 
 test_classes = np.argmax(Y_test, axis=1)
 alex_pred_classes = np.argmax(alex_pred_probs, axis=1)
@@ -36,11 +36,11 @@ res_pred_classes = np.argmax(res_pred_probs, axis=1)
 vgg_pred_classes = np.argmax(vgg_pred_probs, axis=1)
 
 # Top-1 Accuracies of all model predictions
-print("Alexnet:",accuracy_score(alex_pred_classes, test_classes))
-print("Resnet:",accuracy_score(res_pred_classes, test_classes))
-print("Vggnet:",accuracy_score(vgg_pred_classes, test_classes))
+print("Alexnet Dark:",accuracy_score(alex_pred_classes, test_classes))
+print("Resnet Dark:",accuracy_score(res_pred_classes, test_classes))
+print("Vggnet Dark:",accuracy_score(vgg_pred_classes, test_classes))
 
-# Ensemble of all large networks (VGG, Alexnet, Resnet)
+# Ensemble of all dark networks (VGG, Alexnet, Resnet)
 ensemble1_pred_classes = []
 ensemble2_pred_classes = []
 for i in range(len(vgg_pred_classes)):
@@ -59,6 +59,6 @@ for i in range(len(test_classes)):
     if test_classes[i] in [ensemble1_pred_classes[i], ensemble2_pred_classes[i]]:
         pred_count += 1
 #Top-1 accuracy of ensembled network
-print("Ensemble Large:",accuracy_score(ensemble1_pred_classes, test_classes))
+print("Ensemble Dark:",accuracy_score(ensemble1_pred_classes, test_classes))
 #Top-2 accuracy of ensembled network
-print("Top2 Ensemble Acc:", pred_count/len(test_classes))
+print("Top2 Ensemble Acc Dark:", pred_count/len(test_classes))

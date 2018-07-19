@@ -18,11 +18,11 @@ def getData(ipfile, opfile, test_split):
 def top2_acc(y_true, y_pred):
     return metrics.top_k_categorical_accuracy(y_true, y_pred, k=2)
 
-def prepareCallbacks(model_path, logger_file):
+def prepareCallbacks(model_file, logger_file):
 	lr_reducer = ReduceLROnPlateau(factor=np.sqrt(0.1), cooldown=0, patience=5, min_lr=0.5e-6)
 	early_stopper = EarlyStopping(monitor='val_acc',min_delta=0.001, patience=20)
 	csv_logger = CSVLogger(logger_file)
-	model_checkpt= ModelCheckpoint(model_path,monitor='val_acc',save_best_only=True, mode='max',verbose=0)
+	model_checkpt= ModelCheckpoint(model_file, monitor='val_acc', save_best_only=True, mode='max',verbose=0)
 	return(lr_reducer, early_stopper, csv_logger, model_checkpt)
 
 def printMetrics(scores):
